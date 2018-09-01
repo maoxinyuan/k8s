@@ -1,0 +1,11 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: redis-saas20
+subsets:
+ - addresses:
+     - ip: 10.26.254.100
+   ports:
+     - port: 6380
+       protocol: TCP
+

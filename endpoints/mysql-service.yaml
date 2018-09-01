@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysql-saas20
+spec:
+ type : ClusterIP
+ ports:
+  - port: 3306 #k8s集群内部服务之间访问service的入口  mysql容器暴露了3306端口
+    targetPort: 3306 # 与制作容器时暴露的端口一致   有配置NodePort，外部流量可访问k8s中的服务
+    protocol: TCP
+

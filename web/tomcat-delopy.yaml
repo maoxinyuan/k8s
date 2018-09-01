@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: myweb-saas20
+spec:
+  replicas: 2
+  selector:
+    app: myweb-saas20
+  template:
+    metadata:
+      labels:
+        app: myweb-saas20
+    spec:
+      containers:
+        - name: myweb-saas20
+          image: tomcat:8
+          ports:
+          - containerPort: 8080
+

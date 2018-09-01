@@ -1,0 +1,11 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: mongodb-saas20
+subsets:
+ - addresses:
+     - ip: 10.26.254.100
+   ports:
+     - port: 27017
+       protocol: TCP
+

@@ -1,0 +1,230 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zktest-n1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zktest-n1
+  template:
+    metadata:
+      labels:
+        app: zktest-n1
+    spec:
+      hostname: zktest-n1
+      volumes:
+        - name: zktest-data
+          hostPath: 
+            path: /data/zktest-cluster/zktest-data-n1
+        - name: zktest-logs
+          hostPath: 
+            path: /data/zktest-cluster/zktest-logs-n1
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: zktest-n1
+        image: zookeeper:3.4.10
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: zktest-data
+          readOnly: false
+          mountPath: "/data/zktest-data"
+        - name: zktest-logs
+          readOnly: false
+          mountPath: "/data/zktest-logs"
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        #command: ['tail', '-f', '/etc/hosts']  
+        env:
+        - name: ZOO_MY_ID
+          value: "1"
+        - name: ZOO_SERVERS
+          value: server.1=zktest-n1:2888:3888 server.2=zktest-n2:2888:3888 server.3=zktest-n3:2888:3888
+        - name: ZOO_DATA_DIR
+          value: '/data/zktest-data'
+        - name: ZOO_DATA_LOG_DIR
+          value: '/data/zktest-logs'  
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zktest-n2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zktest-n2
+  template:
+    metadata:
+      labels:
+        app: zktest-n2
+    spec:
+      hostname: zktest-n2
+      volumes:
+        - name: zktest-data
+          hostPath: 
+            path: /data/zktest-cluster/zktest-data-n2
+        - name: zktest-logs
+          hostPath: 
+            path: /data/zktest-cluster/zktest-logs-n2
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: zktest-n2
+        image: zookeeper:3.4.10
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: zktest-data
+          readOnly: false
+          mountPath: "/data/zktest-data"
+        - name: zktest-logs
+          readOnly: false
+          mountPath: "/data/zktest-logs"
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        #command: ['tail', '-f', '/etc/hosts']  
+        env:
+        - name: ZOO_MY_ID
+          value: "2"
+        - name: ZOO_SERVERS
+          value: server.1=zktest-n1:2888:3888 server.2=zktest-n2:2888:3888 server.3=zktest-n3:2888:3888
+        - name: ZOO_DATA_DIR
+          value: '/data/zktest-data'
+        - name: ZOO_DATA_LOG_DIR
+          value: '/data/zktest-logs'  
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zktest-n3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zktest-n3
+  template:
+    metadata:
+      labels:
+        app: zktest-n3
+    spec:
+      hostname: zktest-n3
+      volumes:
+        - name: zktest-data
+          hostPath: 
+            path: /data/zktest-cluster/zktest-data-n3
+        - name: zktest-logs
+          hostPath: 
+            path: /data/zktest-cluster/zktest-logs-n3
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: zktest-n3
+        image: zookeeper:3.4.10
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: zktest-data
+          readOnly: false
+          mountPath: "/data/zktest-data"
+        - name: zktest-logs
+          readOnly: false
+          mountPath: "/data/zktest-logs"
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        #command: ['tail', '-f', '/etc/hosts']  
+        env:
+        - name: ZOO_MY_ID
+          value: "3"
+        - name: ZOO_SERVERS
+          value: server.1=zktest-n1:2888:3888 server.2=zktest-n2:2888:3888 server.3=zktest-n3:2888:3888
+        - name: ZOO_DATA_DIR
+          value: '/data/zktest-data'
+        - name: ZOO_DATA_LOG_DIR
+          value: '/data/zktest-logs' 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zktest-n1
+  name: zktest-n1
+  namespace: default
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    targetPort: 2181
+    name: client
+  - port: 2888
+    protocol: TCP
+    targetPort: 2888
+    name: leader
+  - port: 3888
+    protocol: TCP
+    targetPort: 3888
+    name: leader-election
+  selector:
+    app: zktest-n1
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zktest-n2
+  name: zktest-n2
+  namespace: default
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    targetPort: 2181
+    name: client
+  - port: 2888
+    protocol: TCP
+    targetPort: 2888
+    name: leader
+  - port: 3888
+    protocol: TCP
+    targetPort: 3888
+    name: leader-election
+  selector:
+    app: zktest-n2
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zktest-n3
+  name: zktest-n3
+  namespace: default
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    targetPort: 2181
+    name: client
+  - port: 2888
+    protocol: TCP
+    targetPort: 2888
+    name: leader
+  - port: 3888
+    protocol: TCP
+    targetPort: 3888
+    name: leader-election
+  selector:
+    app: zktest-n3
+  sessionAffinity: None
+  type: ClusterIP
