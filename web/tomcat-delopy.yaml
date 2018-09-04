@@ -19,7 +19,7 @@ spec:
         - name: myweb-saas20
           image: tomcat:8
           volumeMounts:
-          - name: saas20logs-tomcat
+          - name: tomcat-logs
             readOnly: false
             mountPath: "/usr/local/tomcat/logs"
 
