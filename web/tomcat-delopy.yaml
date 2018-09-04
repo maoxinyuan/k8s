@@ -11,9 +11,18 @@ spec:
       labels:
         app: myweb-saas20
     spec:
+      volumes:
+        - name: tomcat-logs
+          hostPath:
+            path: /data/
       containers:
         - name: myweb-saas20
           image: tomcat:8
+          volumeMounts:
+          - name: saas20logs-tomcat
+            readOnly: false
+            mountPath: "/usr/local/tomcat/logs"
+
           ports:
           - containerPort: 8080
 
