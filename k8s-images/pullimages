@@ -7,3 +7,23 @@ for imageName in ${images} ; do
   docker tag registry.cn-hangzhou.aliyuncs.com/k8sth/$imageName k8s.gcr.io/$imageName
   docker rmi registry.cn-hangzhou.aliyuncs.com/k8sth/$imageName
 done
+
+
+docker tag da86e6ba6ca1 k8s.gcr.io/pause:3.1
+
+docker pull docker.io/mirrorgooglecontainers/k8s-dns-sidecar-amd64:1.14.9
+docker tag docker.io/mirrorgooglecontainers/k8s-dns-sidecar-amd64:1.14.9 k8s.gcr.io/k8s-dns-sidecar-amd64:1.14.9
+docker rmi docker.io/mirrorgooglecontainers/k8s-dns-sidecar-amd64:1.14.9
+docker pull docker.io/mirrorgooglecontainers/k8s-dns-kube-dns-amd64:1.14.9
+docker tag docker.io/mirrorgooglecontainers/k8s-dns-kube-dns-amd64:1.14.9 k8s.gcr.io/k8s-dns-kube-dns-amd64:1.14.9
+docker rmi docker.io/mirrorgooglecontainers/k8s-dns-kube-dns-amd64:1.14.9
+docker pull docker.io/mirrorgooglecontainers/k8s-dns-dnsmasq-nanny-amd64:1.14.9
+docker tag docker.io/mirrorgooglecontainers/k8s-dns-dnsmasq-nanny-amd64:1.14.9 k8s.gcr.io/k8s-dns-dnsmasq-nanny-amd64:1.14.9
+docker rmi docker.io/mirrorgooglecontainers/k8s-dns-dnsmasq-nanny-amd64:1.14.9
+docker pull registry.cn-shenzhen.aliyuncs.com/k8s_gcr_io/kubernetes-dashboard-amd64:v1.8.3
+docker tag registry.cn-shenzhen.aliyuncs.com/k8s_gcr_io/kubernetes-dashboard-amd64:v1.8.3  k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3
+docker rmi registry.cn-shenzhen.aliyuncs.com/k8s_gcr_io/kubernetes-dashboard-amd64:v1.8.3
+
+docker pull registry.cn-shenzhen.aliyuncs.com/cp_m/flannel:v0.10.0-amd64
+docker tag registry.cn-shenzhen.aliyuncs.com/cp_m/flannel:v0.10.0-amd64 quay.io/coreos/flannel:v0.10.0-amd64
+docker rmi registry.cn-shenzhen.aliyuncs.com/cp_m/flannel:v0.10.0-amd64
