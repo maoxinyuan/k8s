@@ -11,13 +11,32 @@ spec:
       labels:
         app: myweb
     spec:
+      volumes:
+        - name: saas20logs
+          hostPath:
+            path: /mnt
+        - name: host-time
+          hostPath:
+            path : /etc/localtime
+        - name: host-timezone
+          hostPath:
+            path : /etc/timezone
       containers:
         - name: myweb
           image: tomcat:8
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: saas20logs
+            readOnly: false
+            mountPath: "/usr/local/tomcat/logs"
+          - name: host-time
+            mountPath: /etc/localtime
+          - name: host-timezone
+            mountPath: /etc/timezone
           ports:
           - containerPort: 8080
           env:
           - name: MYSQL_SERVICE_HOST
-            value: '101.37.177.104'
+            value: 'ipaddress'
           - name: MYSQL_SERVICE_PORT
             value: '3306'
