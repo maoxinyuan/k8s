@@ -25,6 +25,11 @@ spec:
         - name: myweb
           image: tomcat:8
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 256Mi
           volumeMounts:
           - name: saas20logs
             readOnly: false
