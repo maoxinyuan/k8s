@@ -30,9 +30,9 @@ spec:
             requests:
                 memory: 1024Mi
           imagePullPolicy: IfNotPresent
-          env:
-            - name : JAVA_OPTS
-              value: "-Xms1024M -Xmx1024M -XX:PermSize=768M -XX:MaxPermSize=768M -Dcoldfusion.disablejsafe=true"
+          #env:  #等同于resources设置?
+          #  - name : JAVA_OPTS
+          #    value: "-Xms1024M -Xmx1024M -XX:PermSize=768M -XX:MaxPermSize=768M -Dcoldfusion.disablejsafe=true"
           volumeMounts:
           - name: saas20logs
             readOnly: false
