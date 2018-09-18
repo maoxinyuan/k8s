@@ -30,8 +30,6 @@ spec:
             requests:
                 memory: 1024Mi
           imagePullPolicy: IfNotPresent
-          imagePullSecrets:
-           - name: k8s-harbor
           #env:  #等同于resources设置?
           #  - name : JAVA_OPTS
           #    value: "-Xms1024M -Xmx1024M -XX:PermSize=768M -XX:MaxPermSize=768M -Dcoldfusion.disablejsafe=true"
@@ -50,3 +48,5 @@ spec:
             value: 'ipaddress'
           - name: MYSQL_SERVICE_PORT
             value: '3306'
+      imagePullSecrets:
+           - name: k8s-harbor
