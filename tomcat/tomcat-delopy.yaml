@@ -31,7 +31,7 @@ spec:
                 memory: 1024Mi
           imagePullPolicy: IfNotPresent
           imagePullSecrets:
-          - name: dockersecret 创建的name
+           - name: k8s-harbor
           #env:  #等同于resources设置?
           #  - name : JAVA_OPTS
           #    value: "-Xms1024M -Xmx1024M -XX:PermSize=768M -XX:MaxPermSize=768M -Dcoldfusion.disablejsafe=true"
