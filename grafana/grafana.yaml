@@ -1,0 +1,60 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: grafana
+  namespace: ns-monitor
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: images.unovo.com.cn/library/grafana:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            # keep request = limit to keep this container in guaranteed class
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          env:
+            - name: GF_AUTH_BASIC_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "false"
+            # - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+            #   value: Admin
+            # does not really work, because of template variables in exported dashboards:
+            # - name: GF_DASHBOARDS_JSON_ENABLED
+            #   value: "true"
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 3000
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: grafana-persistent-storage
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+      volumes:
+        - name: grafana-persistent-storage
+          emptyDir: {}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: ns-monitor
+  name: grafana
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: NodePort
+  selector:
+    app: grafana
