@@ -58,3 +58,14 @@ spec:
   type: NodePort
   selector:
     app: grafana
+    
+    
+    
+    
+    
+    
+    
+这里存在一些问题后续要继续研究解决。
+1、prometheus的数据存储采用emptydir。如果Pod被删除，或者Pod发生迁移，emptyDir也会被删除，并且永久丢失。后续可以在K8S集群外部再配置一个Prometheus系统来永久保存监控数据， 两个prometheus系统之间通过配置job自动进行数据拉取。
+2、Grafana的配置数据存储采用emptydir。如果Pod被删除，或者Pod发生迁移，emptyDir也会被删除，并且永久丢失。我们也可以选择将grafana配置在k8s外部，数据源选择K8S集群外部的prometheus即可。
+3、关于监控项的报警（alertmanager）尚未配置。
